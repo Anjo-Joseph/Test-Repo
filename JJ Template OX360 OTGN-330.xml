@@ -1,0 +1,291 @@
+<?xml version="1.0"?><!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+<pdf>
+    <head>
+        <link name="NotoSans" type="font" subtype="truetype" src="${nsfont.NotoSans_Regular}"
+              src-bold="${nsfont.NotoSans_Bold}" src-italic="${nsfont.NotoSans_Italic}"
+              src-bolditalic="${nsfont.NotoSans_BoldItalic}" bytes="2"/>
+        <macrolist>
+            <macro id="nlheader">
+            </macro>
+            <macro id="nlfooter">
+                <table class="footer" align="left"
+                       style="background-color: rgb(0, 191, 255);margin-left: -60px;width: 110%;font-weight: bold;font-size: 12pt;color:white;">
+                    <tr style="padding-top: 9px;">
+                        <td width="7%">&nbsp;</td>
+                        <td width="93%">Implemented . Messured . Reported</td>
+                    </tr>
+                    <tr>
+                        <td width="7%">&nbsp;</td>
+                        <td width="93%">&nbsp;</td>
+                    </tr>
+                </table>
+            </macro>
+        </macrolist>
+        <style type="text/css">
+            p {
+            margin-top: 0px;
+            margin-bottom: 0px;
+            }
+            footer {
+            height:10px;
+            }
+            table.datatable{
+            border: 1px solid Gray;
+            border-collapse: collapse;
+            }
+            th.heading{
+            font-size: 10pt;
+            align: center;
+            padding-left: 3px;
+            border: 1px solid Gray;
+            border-collapse: collapse;
+            font-weight: bold;
+            }
+            td.data{
+            font-size: 10pt;
+            padding-left: 3px;
+            border: 1px solid Gray;
+            border-collapse:
+            collapse;
+            }
+            td.rightaligneddata{
+            font-size: 10pt;
+            padding-right: 3px;
+            border: 1px solid Gray;
+            border-collapse: collapse;
+            text-align: right;
+            align:right;
+            }
+            td.centeraligneddata{
+            font-size: 10pt;
+            padding-right: 3px;
+            border: 1px solid Gray;
+            border-collapse: collapse;
+            text-align: center;
+            align:center;
+            }
+            td.total{
+            font-size: 10pt;
+            padding-right: 3px;
+            border: 1px solid Gray;
+            border-collapse: collapse;
+            text-align:right;
+            }
+            tr.heading{
+            background-color: rgb(0, 191, 255);
+            }
+            th.heading1{
+            background-color: rgb(0, 191, 255);
+            color:white;
+            align: center;
+            font-size: 13pt;
+            font-weight: bold;
+            }
+            td.altcol1{
+            background-color: rgb(0, 191, 255);
+            color:white;
+            width:20%;
+            font-size: 20pt;
+            border:0px;
+            margin:0px;
+            padding-left:3px;
+            font-weight: bold;
+            }
+            td.altcol2{background-color : rgb(240, 248, 255);;
+            font-size: 20pt;
+            border:0px;
+            margin:0px;
+            padding-left:3px;
+            font-weight: bold;
+            }
+            th.head1{
+            background-color: rgb(0, 191, 255);
+            color: white;
+            align: center;
+            font-size: 13pt;
+            font-weight: bold;
+            }
+<!--            div.custname{-->
+<!--            word-wrap: normal;-->
+<!--            }-->
+
+        </style>
+    </head>
+    <body header="nlheader" header-height="2%" footer="nlfooter" footer-height="1%" footer-width="100%"
+          padding="0.5in 0.5in 0.4in 0.5in" size="Letter">
+        <table align="left" width="100%" height="80px" style="border-collapse: collapse;">
+            <tbody>
+                <tr style="height:30px;">
+                    <td class="altcol1">Customer</td>
+                   <td class="altcol2" style="align:left">${data.customerName}</td>
+                </tr>
+                <tr style="height:30px;">
+                    <td class="altcol1">Date</td>
+                    <td class="altcol2">${data.todaysDate}</td>
+                </tr>
+            </tbody>
+        </table>
+        <p>&nbsp;</p>
+        <table width="100%" height="20px" style="border-collapse: collapse;">
+            <tbody>
+                <tr>
+                    <th class="heading1">
+                        OX360 Report
+                    </th>
+                </tr>
+            </tbody>
+        </table>
+
+        <table width="100%" class="datatable" style= "margin-top: 5px;">
+            <tbody>
+                <tr style="background-color: rgb(0, 191, 255)">
+                    <th class="heading">Area</th>
+                    <th class="heading">Description</th>
+                    <th class="heading">Value</th>
+                </tr>
+                <tr>
+                    <td class="data">Sales</td>
+                    <td class="data">Total Sales During the Period</td>
+                    <td class="rightaligneddata">${data.invoiceAmount1}</td>
+                </tr>
+            </tbody>
+        </table>
+        <p>&nbsp;</p>
+        <table width="100%" class="datatable">
+            <tbody>
+                <tr class="heading">
+                    <th class="heading">Area</th>
+                    <th class="heading">Checkbox Value</th>
+                    <th class="heading">Selected Value</th>
+                </tr>
+                <tr>
+                    <td class="data">Marketing Support</td>
+                    <td class="data">${data.marketingSupportProvided}</td>
+                    <td class="data">
+                        <p align="center">${data.marketingSupportValue1}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="data">Training</td>
+                    <td class="data">${data.trainingConducted}</td>
+                    <td class="data">
+                        <p align="center">${data.trainingValue1}</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p>&nbsp;</p>
+
+
+        <table width="100%" class="datatable">
+            <tbody>
+                <tr class="heading">
+                    <th class="heading">Area</th>
+                    <th class="heading">Description</th>
+                    <th class="heading">Product Category</th>
+                    <th class="heading">Value</th>
+                </tr>
+                <!--ROW_CONTENT_HERE-->
+            </tbody>
+        </table>
+
+
+        <p>&nbsp;</p>
+        <table width="100%" height="20px" style="border-collapse: collapse;">
+            <tbody>
+                <tr>
+                    <th class="head1">OX360 Component Weighting</th>
+                </tr>
+            </tbody>
+        </table>
+
+        <table width="100%" class="datatable" style= "margin-top: 5px;">
+            <tbody>
+                <tr class="heading">
+                    <th class="heading">Area</th>
+                    <th class="heading">Description</th>
+                    <th class="heading">Value</th>
+                    <th class="heading">Weighting</th>
+                </tr>
+                <tr>
+                    <td class="data">Sales against the Target</td>
+                    <td class="data">Total sales against target</td>
+                    <td class="centeraligneddata">${data.salesAgainstTarget1}%</td>
+                    <td class="rightaligneddata">${data.salesweighting1}%</td>
+                </tr>
+                <tr>
+                    <td class="data">Backorders</td>
+                    <td class="data">Total value of backorders against sales for the period</td>
+                    <td class="centeraligneddata">${data.backorderedPercentage1}%</td>
+                    <td class="rightaligneddata">${data.backOrderWeighting1}%</td>
+                </tr>
+                <tr>
+                    <td class="data">Credits/returns</td>
+                    <td class="data">Total value of credits/returns against sales for the period</td>
+                    <td class="centeraligneddata">${data.creditReturns1}</td>
+                    <td class="rightaligneddata">${data.creditReturnsWeighting1}%</td>
+                </tr>
+                <tr>
+                    <td class="data">Cases</td>
+                    <td class="data">Total number of cases for the period</td>
+                    <td class="centeraligneddata">${data.casesCount}</td>
+                    <td class="rightaligneddata">${data.caseWeighting1}%</td>
+                </tr>
+                <tr>
+                    <td class="data"># MCI’s</td>
+                    <td class="data">Number of MCIs achieved by OX team during period(based on customer grade level)
+                    </td>
+                    <td class="centeraligneddata">${data.activityCount}</td>
+                    <td class="rightaligneddata">${data.activityWeighting1}%</td>
+                </tr>
+                <tr>
+                    <td class="data">Merchandising</td>
+                    <td class="data">Condition of merchandising during period</td>
+                    <td class="data" style="text-align: center; align:center;">--</td>
+                    <td class="rightaligneddata">${data.merchandisingWeighting1}%</td>
+                </tr>
+                <tr>
+                    <td class="data">Training</td>
+                    <td class="data">Training completed with store staff during period</td>
+                    <td class="data" style="text-align: center; align:center;">--</td>
+                    <td class="rightaligneddata">${data.trainingWeighting1}%</td>
+                </tr>
+                <tr>
+                    <td class="total" colspan="3">
+                        <b>Total</b>
+                    </td>
+                    <td class="rightaligneddata">
+                        <b>${data.totalWeighting}%</b>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p>&nbsp;</p>
+        <div align="right">
+            <table align="right" width="60%">
+                <tbody>
+                    <tr class="heading">
+                        <td style="color:white; height:20px; align: center; font-size: 14pt;font-weight: bold;">
+                            Merchandising
+                        </td>
+                    </tr>
+                    <tr style="height:1px;padding : 0px;">
+                        <td>&nbsp;</td>
+                    </tr>
+
+                    <tr>
+                        <td style="text-align: center; width:60%;">
+<!--                            <img src="https://3425005-sb1.app.netsuite.com/core/media/media.nl?id=23774770&amp;c=3425005_SB1&amp;h=4JRD3TXTflztyPx40gQ4uuPCP0_Xgv98YiG3PZt15RdLNUyr&amp;fcts=20201126233413&amp;whence="-->
+<!--                                 alt="No Image" width="31%" height="20%"/>-->
+
+                            <img src = "${data.imageurl}" alt="No Image" width="31%" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <table></table>
+        </div>
+    </body>
+</pdf>
