@@ -15,8 +15,8 @@
  * Date created :03-12-2020
  *
  ******************************************************************************/
-define(['N/render', 'N/search', 'N/file', 'N/format/i18n'],
-    function (render, search, file, formati) {
+define(['N/render', 'N/search', 'N/file', 'N/format/i18n','N/xml'],
+    function (render, search, file, formati,xml) {
 
         function formatCurrency(num) {
             try {
@@ -31,7 +31,6 @@ define(['N/render', 'N/search', 'N/file', 'N/format/i18n'],
         }
 
         function makeItCurrency(myNumber) {
-            // log.debug('makeItCurrency', 'makeItCurrency');
             var myFormat = formati.getCurrencyFormatter({currency: "AUD"});
             var newCur = myFormat.format({
                 number: myNumber
@@ -56,10 +55,64 @@ define(['N/render', 'N/search', 'N/file', 'N/format/i18n'],
             }
         }
 
+        function createTableRows(productCategoryArray) {
+            if (productCategoryArray.length < 1) {
+                var tableContent = "<tr>" +
+                    "<td  class=\"data\">Sales by Product Category</td>" +
+                    "<td class=\"data\">Total Sales By product category</td>" +
+                    "<td class=\"centeraligneddata\"> -- </td>" +
+                    "<td class=\"centeraligneddata\"> -- </td>" +
+                    "</tr>";
+
+            } else {
+                var tableContent = "<tr>" +
+                    "<td rowspan='" + productCategoryArray.length + "' class=\"data\">Sales by Product Category</td>" +
+                    "<td rowspan='" + productCategoryArray.length + "' class=\"data\">Total Sales By product category</td>" +
+                    "<td class=\"data\">" + productCategoryArray[0].primaryGroup + "</td>" +
+                    "<td class=\"rightaligneddata\">" + makeItCurrency(Number(checkForParameter(productCategoryArray[0].salesByProductCategory, 0))) + "</td>" +
+                    "</tr>";
+
+            }
+
+
+            for (var i = 1; i < productCategoryArray.length; i++) {
+
+                tableContent += "<tr>" +
+                    "<td class=\"data\">" + productCategoryArray[i].primaryGroup + "</td>" +
+                    "<td class=\"rightaligneddata\">" + makeItCurrency(Number(checkForParameter(productCategoryArray[i].salesByProductCategory, 0))) + "</td>" +
+                    "</tr>";
+
+            }
+            return tableContent;
+        }
+
+
+        function escapeSpecialChar(imageurl) {
+            if (imageurl != "" && imageurl != null) {
+                // var newString = xml.escape({
+                //     xmlText : argument
+                // });
+
+                imageurl = imageurl.replace(/&/g, '&amp;');
+                imageurl = imageurl.replace(/</g, '&lt;');
+                imageurl = imageurl.replace(/>/g, '&gt;');
+                imageurl = imageurl.replace(/"/g, '&quot;');
+                imageurl = imageurl.replace(/'/g, '&apos;');
+                log.debug('imageurl inside function ',imageurl);
+                return imageurl;
+            } else {
+                return "https://3425005-sb1.app.netsuite.com/core/media/media.nl?id=23774770&amp;c=3425005_SB1&amp;h=4JRD3TXTflztyPx40gQ4uuPCP0_Xgv98YiG3PZt15RdLNUyr&amp;fcts=20201126233413&amp;whence=";
+            }
+
+        }
+
+
+
         function onRequestFxn(context) {
             try {
                 var objects = {};
-                var currentuser = '18445';
+
+                var currentuser = '166702';
                 var customerSearchObj = search.create({
                     type: "customer",
                     // title: "search" + new Date().getTime(),
@@ -350,6 +403,26 @@ define(['N/render', 'N/search', 'N/file', 'N/format/i18n'],
                 objects.marketingSupportValue1 = checkForParameter(objects.marketingSupportValue, '--');
                 objects.trainingValue1 = checkForParameter(objects.trainingValue, '--');
 
+                if (objects.merchandisingImage !== null && objects.merchandisingImage !== undefined
+                    && objects.merchandisingImage !== "null" && objects.merchandisingImage !== "NaN"
+                    && objects.merchandisingImage !== "undefined"
+                    && objects.merchandisingImage != ""
+                    && objects.merchandisingImage != " ") {
+
+
+                    var fileObj = file.load({
+                        id: objects.merchandisingImage
+                    });
+                    imageurl = fileObj.url;
+                    log.debug('imageurl', imageurl);
+
+                } else {
+                    imageurl = "";
+                }
+                objects.imageurl = escapeSpecialChar(imageurl);
+
+
+log.debug('objects.imageurl',objects.imageurl);
                 var customerSearchObj5 = search.create({
                     type: "customer",
                     filters:
@@ -382,6 +455,7 @@ define(['N/render', 'N/search', 'N/file', 'N/format/i18n'],
                     }
                     return true;
                 });
+
 
                 var invoiceSearchObj = search.create({
                     type: "invoice",
@@ -432,16 +506,18 @@ define(['N/render', 'N/search', 'N/file', 'N/format/i18n'],
                 });
 
                 var productCategoryArray = [];
-                var tempObj = {};
                 invoiceSearchObj.run().each(function (result) {
-
+                    var tempObj = {};
                     for (var i = 0; i < invoiceSearchObj.columns.length; i++) {
                         tempObj[invoiceSearchObj.columns[i].label] = result.getValue(invoiceSearchObj.columns[i]);
                     }
+
                     productCategoryArray.push(tempObj);
                     return true;
                 });
                 objects.productArrayLength = productCategoryArray.length;
+
+                var tableContent = createTableRows(productCategoryArray);
 
                 var activityWeighting = ((objects.activityCount / objects.totalAcivitySum) * 100) * 0.1;
                 objects.activityWeighting1 = formatCurrency(activityWeighting);
@@ -483,26 +559,21 @@ define(['N/render', 'N/search', 'N/file', 'N/format/i18n'],
 
                 var totalWeighting0 = salesweighting2 + backOrderWeighting2 + creditReturnsWeighting2 + caseWeighting2 + activityWeighting2 + merchandisingWeighting2 + trainingWeighting2;
                 objects.totalWeighting = totalWeighting0.toFixed(2);
-
-                // log.debug('objects', objects);
                 var xmlTmplFile = file.load('Templates/PDF Templates/JJ Template OX360 OTGN-330.xml');
                 var renderer = render.create();
-                renderer.templateContent = xmlTmplFile.getContents();
+                var templateContent = xmlTmplFile.getContents();
+                templateContent = templateContent.replace('<!--ROW_CONTENT_HERE-->', tableContent);
 
+                renderer.templateContent = templateContent;
 
                 renderer.addCustomDataSource({
                     format: render.DataSource.OBJECT,
                     alias: "data",
                     data: objects
                 });
-                // renderer.addCustomDataSource({
-                //     format: render.DataSource.OBJECT,
-                //     alias: "productdata",
-                //     data: tempObj
-                // });
+
                 var transactionFile = renderer.renderAsPdf();
                 context.response.writeFile(transactionFile, true);
-
 
             } catch (e) {
                 log.debug({
