@@ -1,4 +1,6 @@
 <?xml version="1.0"?><!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+<pdfset>
+    <pdf src="https://3425005-sb1.app.netsuite.com/core/media/media.nl?id=23777303&amp;c=3425005_SB1&amp;h=55YQ3d1WZYRdoQfRzqH0r-6haKu38q1GUtocLm8-poBUyFtl&amp;_xt=.pdf" />
 <pdf>
     <head>
         <link name="NotoSans" type="font" subtype="truetype" src="${nsfont.NotoSans_Regular}"
@@ -12,7 +14,7 @@
                        style="background-color: rgb(0, 191, 255);margin-left: -60px;width: 110%;font-weight: bold;font-size: 12pt;color:white;">
                     <tr style="padding-top: 9px;">
                         <td width="7%">&nbsp;</td>
-                        <td width="93%">Implemented . Messured . Reported</td>
+                        <td width="93%">Implemented . Measured . Reported</td>
                     </tr>
                     <tr>
                         <td width="7%">&nbsp;</td>
@@ -69,7 +71,7 @@
             padding-right: 3px;
             border: 1px solid Gray;
             border-collapse: collapse;
-            text-align:right;
+            align:right;
             }
             tr.heading{
             background-color: rgb(0, 191, 255);
@@ -109,12 +111,9 @@
             width: 100%;
             height: auto;
             }
-<!--            div.custname{-->
-<!--            word-wrap: normal;-->
-<!--            }-->
-            div.freeformdiv{
-            float: left;
-            }
+            <!--            div.custname{-->
+            <!--            word-wrap: normal;-->
+            <!--            }-->
             table.freeTextTable{
             page-break-inside: avoid;
             }
@@ -127,7 +126,7 @@
             <tbody>
                 <tr style="height:30px;">
                     <td class="altcol1">Customer</td>
-                   <td class="altcol2" style="align:left">${data.customerName}</td>
+                    <td class="altcol2" style="align:left">${data.customerName}</td>
                 </tr>
                 <tr style="height:30px;">
                     <td class="altcol1">Date</td>
@@ -286,8 +285,8 @@
 
                     <tr style="width:31%">
                         <td style="text-align: center;">
-<!--                            <img src="https://3425005-sb1.app.netsuite.com/core/media/media.nl?id=23774770&amp;c=3425005_SB1&amp;h=4JRD3TXTflztyPx40gQ4uuPCP0_Xgv98YiG3PZt15RdLNUyr&amp;fcts=20201126233413&amp;whence="-->
-<!--                                 alt="No Image" width="100%" height="auto"/>-->
+                            <!--                            <img src="https://3425005-sb1.app.netsuite.com/core/media/media.nl?id=23774770&amp;c=3425005_SB1&amp;h=4JRD3TXTflztyPx40gQ4uuPCP0_Xgv98YiG3PZt15RdLNUyr&amp;fcts=20201126233413&amp;whence="-->
+                            <!--                                 alt="No Image" width="100%" height="auto"/>-->
 
                             <img src = "${data.imageurl}" alt="No Image"  width="400px" height="150px"/>
                         </td>
@@ -295,12 +294,10 @@
                 </tbody>
             </table>
 
-
-
         </div>
         <p>&nbsp;</p>
-        <div align="left" class="freeformdiv">
-            <table class="freeTextTable"><tr><td>
+
+            <table class="freeTextTable" width="100%"><tr><td>
                 <table align="left" width="100%">
                     <!--CUSTOMER_FEEDBACK_CONTENT_HERE-->
                 </table>
@@ -312,11 +309,9 @@
                 <table align="left" width="100%">
                     <!--PRODUCT_OPPORTUNITY_CONTENT_HERE-->
                 </table>
+
             </td></tr>
-
             </table>
-        </div>
-
-<!--        <img src="https://images.ctfassets.net/hrltx12pl8hq/6bi6wKIM5DDM5U1PtGVFcP/1c7fce6de33bb6575548a646ff9b03aa/nature-photography-pictures.jpg?fit=fill&amp;w=800&amp;h=300" width="40%" height="auto"/>-->
     </body>
 </pdf>
+</pdfset>
