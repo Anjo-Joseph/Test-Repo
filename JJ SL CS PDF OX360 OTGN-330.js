@@ -15,8 +15,8 @@
  * Date created :03-12-2020
  *
  ******************************************************************************/
-define(['N/render', 'N/search', 'N/file', 'N/format/i18n','N/xml'],
-    function (render, search, file, formati,xml) {
+define(['N/render', 'N/search', 'N/file', 'N/format/i18n', 'N/xml', 'N/record'],
+    function (render, search, file, formati, xml, record) {
 
         function formatCurrency(num) {
             try {
@@ -98,10 +98,136 @@ define(['N/render', 'N/search', 'N/file', 'N/format/i18n','N/xml'],
                 imageurl = imageurl.replace(/>/g, '&gt;');
                 imageurl = imageurl.replace(/"/g, '&quot;');
                 imageurl = imageurl.replace(/'/g, '&apos;');
-                log.debug('imageurl inside function ',imageurl);
+                // log.debug('imageurl inside function ',imageurl);
                 return imageurl;
             } else {
                 return "https://3425005-sb1.app.netsuite.com/core/media/media.nl?id=23774770&amp;c=3425005_SB1&amp;h=4JRD3TXTflztyPx40gQ4uuPCP0_Xgv98YiG3PZt15RdLNUyr&amp;fcts=20201126233413&amp;whence=";
+            }
+
+        }
+
+//         function freeformContent(customerFreeformTextValueObject) {
+//             try {
+//
+// var customerFreeformTextValueObject_k1 = customerFreeformTextValueObject.k1;
+//                 if (customerFreeformTextValueObject.k1 != []) {
+//                     var freeformtextContent = '<tr class=\"heading\"><td class=\"heading\">Customer feedback</td></tr>'
+//
+//                         for (var i=0;i<5; i++) {
+//                             log.debug('inside for loop','inside for loop');
+//                             if(customerFreeformTextValueObject.k1[i] != null) {
+//                                 freeformtextContent += '<tr class=\"data\"><td class=\"data\">' + customerFreeformTextValueObject.k1[i] + '</td></tr>'
+//                             }
+//                         }
+//                     }
+//                 var customerFreeformTextValueObject_k2 = customerFreeformTextValueObject.k2;
+//                 if (customerFreeformTextValueObject.k2 != []) {
+//                      freeformtextContent += '<tr class=\"heading\"><td class=\"heading\">Bulk buy opportunities</td></tr>'
+//
+//                     for (var i=0;i<5; i++) {
+//                         if(customerFreeformTextValueObject.k2[i] != null) {
+//                             freeformtextContent += '<tr class=\"data\"><td class=\"data\">' + customerFreeformTextValueObject.k2[i] + '</td></tr>'
+//                         }
+//                     }
+//                 }
+//
+//                 var customerFreeformTextValueObject_k3 = customerFreeformTextValueObject.k3;
+//                 if (customerFreeformTextValueObject.k3 != []) {
+//                     freeformtextContent += '<tr class=\"heading\"><td class=\"heading\">Product opportunities</td></tr>'
+//
+//                     for (var i=0;i<5; i++) {
+//                         if(customerFreeformTextValueObject.k3[i] != null) {
+//                             freeformtextContent += '<tr class=\"data\"><td class=\"data\">' + customerFreeformTextValueObject.k3[i] + '</td></tr>'
+//                         }
+//                     }
+//                 }
+//
+//
+//                 return freeformtextContent;
+//
+//             } catch (e) {
+//
+//                 log.error("Err@ FN freeformContent", e);
+//
+//             }
+//
+//         }
+
+
+        function customerFeedbackContent(customerFreeformTextValueObject) {
+            try {
+
+                var customerFreeformTextValueObject_k1 = customerFreeformTextValueObject.k1;
+                if (customerFreeformTextValueObject.k1 != []) {
+                    var freeformtextContent = '<tr class=\"heading\"><td class=\"heading\">Customer feedback</td></tr>'
+
+                    for (var i=0;i<5; i++) {
+                        log.debug('inside for loop','inside for loop');
+                        if(customerFreeformTextValueObject.k1[i] != null) {
+                            freeformtextContent += '<tr class=\"data\"><td class=\"data\">' + customerFreeformTextValueObject.k1[i] + '</td></tr>'
+                        }
+                    }
+                }
+
+
+
+
+
+
+                return freeformtextContent;
+
+            } catch (e) {
+
+                log.error("Err@ FN freeformContent", e);
+
+            }
+
+        }
+
+        function bulkByOppoContent(customerFreeformTextValueObject) {
+            try {
+
+                var customerFreeformTextValueObject_k2 = customerFreeformTextValueObject.k2;
+                if (customerFreeformTextValueObject.k2 != []) {
+                   var  freeformtextContent = '<tr class=\"heading\"><td class=\"heading\">Bulk buy opportunities</td></tr>'
+
+                    for (var i=0;i<5; i++) {
+                        if(customerFreeformTextValueObject.k2[i] != null) {
+                            freeformtextContent += '<tr class=\"data\"><td class=\"data\">' + customerFreeformTextValueObject.k2[i] + '</td></tr>'
+                        }
+                    }
+                }
+
+                return freeformtextContent;
+
+            } catch (e) {
+
+                log.error("Err@ FN freeformContent", e);
+
+            }
+
+        }
+
+        function productOppoContent(customerFreeformTextValueObject) {
+            try {
+
+                var customerFreeformTextValueObject_k3 = customerFreeformTextValueObject.k3;
+                if (customerFreeformTextValueObject.k3 != []) {
+                  var  freeformtextContent = '<tr class=\"heading\"><td class=\"heading\">Product opportunities</td></tr>'
+
+                    for (var i=0;i<5; i++) {
+                        if(customerFreeformTextValueObject.k3[i] != null) {
+                            freeformtextContent += '<tr class=\"data\"><td class=\"data\">' + customerFreeformTextValueObject.k3[i] + '</td></tr>'
+                        }
+                    }
+                }
+
+                return freeformtextContent;
+
+            } catch (e) {
+
+                log.error("Err@ FN freeformContent", e);
+
             }
 
         }
@@ -112,7 +238,36 @@ define(['N/render', 'N/search', 'N/file', 'N/format/i18n','N/xml'],
             try {
                 var objects = {};
 
-                var currentuser = '166702';
+                var currentuser = '17372';
+
+
+                var customerRecord = record.load({type: "customer", id: currentuser});
+                var customerFreeformTextValue = customerRecord.getValue({
+                    fieldId: 'custentity_jj_customer_ox360_otgn_330'
+                });
+                log.debug('customerFreeformTextValue', customerFreeformTextValue);
+                if(customerFreeformTextValue !="" || customerFreeformTextValue!= null) {
+                    var customerFreeformTextValueObject = JSON.parse(customerFreeformTextValue);
+                    log.debug('customerFreeformTextValueObject', customerFreeformTextValueObject);
+
+                    // var test0 = customerFreeformTextValueObject.k1[2];
+                    // log.debug('test0', test0);
+                    // var test1 = customerFreeformTextValueObject.k2[1];
+                    // log.debug('test1', test1);
+
+
+                    // var freeformtextContent = freeformContent(customerFreeformTextValueObject);
+                    // log.debug('freeformtextContent',freeformtextContent);
+
+                    var customerFeedbackContent1 = customerFeedbackContent(customerFreeformTextValueObject);
+                    var bulkByOppoContent1 = bulkByOppoContent(customerFreeformTextValueObject);
+                    var productOppoContent1 = productOppoContent(customerFreeformTextValueObject);
+                }else{
+                    var customerFeedbackContent1 ="";
+                    var bulkByOppoContent1 ="";
+                    var productOppoContent1 ="";
+                }
+
                 var customerSearchObj = search.create({
                     type: "customer",
                     // title: "search" + new Date().getTime(),
@@ -231,7 +386,6 @@ define(['N/render', 'N/search', 'N/file', 'N/format/i18n','N/xml'],
 
                     return false;
                 });
-
 
                 var customerSearchObj2 = search.create({
                     type: "customer",
@@ -414,15 +568,14 @@ define(['N/render', 'N/search', 'N/file', 'N/format/i18n','N/xml'],
                         id: objects.merchandisingImage
                     });
                     imageurl = fileObj.url;
-                    log.debug('imageurl', imageurl);
-
+                    // log.debug('imageurl', imageurl);
                 } else {
                     imageurl = "";
                 }
                 objects.imageurl = escapeSpecialChar(imageurl);
 
 
-log.debug('objects.imageurl',objects.imageurl);
+// log.debug('objects.imageurl',objects.imageurl);
                 var customerSearchObj5 = search.create({
                     type: "customer",
                     filters:
@@ -511,10 +664,12 @@ log.debug('objects.imageurl',objects.imageurl);
                     for (var i = 0; i < invoiceSearchObj.columns.length; i++) {
                         tempObj[invoiceSearchObj.columns[i].label] = result.getValue(invoiceSearchObj.columns[i]);
                     }
-
+                    // log.debug('tempObj', tempObj);
                     productCategoryArray.push(tempObj);
                     return true;
                 });
+
+
                 objects.productArrayLength = productCategoryArray.length;
 
                 var tableContent = createTableRows(productCategoryArray);
@@ -563,6 +718,13 @@ log.debug('objects.imageurl',objects.imageurl);
                 var renderer = render.create();
                 var templateContent = xmlTmplFile.getContents();
                 templateContent = templateContent.replace('<!--ROW_CONTENT_HERE-->', tableContent);
+
+                templateContent = templateContent.replace('<!--CUSTOMER_FEEDBACK_CONTENT_HERE-->', customerFeedbackContent1);
+                templateContent = templateContent.replace('<!--BULK_BY_OPPORTUNITY_CONTENT_HERE-->', bulkByOppoContent1);
+
+                templateContent = templateContent.replace('<!--PRODUCT_OPPORTUNITY_CONTENT_HERE-->', productOppoContent1);
+
+
 
                 renderer.templateContent = templateContent;
 
