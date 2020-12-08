@@ -2,11 +2,25 @@
  * @NApiVersion 2.x
  * @NScriptType Suitelet
  */
+/*******************************************************************************
+ * CLIENTNAME:OX Tools
+ * OTGN-326
+ * OX360 Quarterly report
+ * **************************************************************************
+ * Date : 03-12-2020
+ *
+ * Author: Jobin & Jismi IT Services LLP
+ * Script Description :
+ * Creation of OX360 Report link in customer dashboard
+ * Date created :03-12-2020
+ *
+ ******************************************************************************/
 // Suitetet to display OX360 Report in customer Dashboard
 define(['N/search', 'N/runtime', 'N/format', 'N/format/i18n', 'N/file', 'N/record'],
     function (search, runtime, format, formati, file, record) {
         var objects = {};
 
+        //function to format number with 2 decimal digits
         function formatCurrency(num) {
             try {
                 if (num) {
@@ -19,6 +33,7 @@ define(['N/search', 'N/runtime', 'N/format', 'N/format/i18n', 'N/file', 'N/recor
             }
         }
 
+        // function to format amount to Australian currency format
         function makeItCurrency(myNumber) {
             // log.debug('makeItCurrency', 'makeItCurrency');
             var myFormat = formati.getCurrencyFormatter({currency: "AUD"});
@@ -48,6 +63,7 @@ define(['N/search', 'N/runtime', 'N/format', 'N/format/i18n', 'N/file', 'N/recor
 
         function onRequestFxn(context) {
             try {
+
                 var currentuser = runtime.getCurrentUser().id;
                 log.error('currentuser', currentuser);
 
@@ -73,7 +89,7 @@ define(['N/search', 'N/runtime', 'N/format', 'N/format/i18n', 'N/file', 'N/recor
 
                     var customerRecord = record.load({type: "customer", id: currentuser});
                     if (csfeedback11 != "" || csfeedback22 != "" || csfeedback33 != "" || csfeedback44 != "" || csfeedback55 != "") {
-                        log.error('inside Customer feedback if', 'inside Customer feedback if');
+                        // log.error('inside Customer feedback if', 'inside Customer feedback if');
                         var eventRecord = record.create({
                             type: record.Type.CALENDAR_EVENT,
                             isDynamic: true
@@ -84,7 +100,7 @@ define(['N/search', 'N/runtime', 'N/format', 'N/format/i18n', 'N/file', 'N/recor
                         eventRecord.save();
                     }
                     if (bboppo11 != "" || bboppo22 != "" || bboppo33 != "" || bboppo44 != "" || bboppo55 != "") {
-                        log.error('Bulk buy opportunities','Bulk buy opportunities');
+                        // log.error('Bulk buy opportunities', 'Bulk buy opportunities');
                         var eventRecord1 = record.create({
                             type: record.Type.CALENDAR_EVENT,
                             isDynamic: true
@@ -94,8 +110,8 @@ define(['N/search', 'N/runtime', 'N/format', 'N/format/i18n', 'N/file', 'N/recor
                         eventRecord1.setValue('company', currentuser);
                         eventRecord1.save();
                     }
-                    if (prdoppo11 != "" || prdoppo22 != "" || prdoppo33 != "" || prdoppo44 != "" || prdoppo55 != ""){
-                        log.error('Product opportunities','Product opportunities');
+                    if (prdoppo11 != "" || prdoppo22 != "" || prdoppo33 != "" || prdoppo44 != "" || prdoppo55 != "") {
+                        // log.error('Product opportunities', 'Product opportunities');
                         var eventRecord2 = record.create({
                             type: record.Type.CALENDAR_EVENT,
                             isDynamic: true
@@ -106,12 +122,104 @@ define(['N/search', 'N/runtime', 'N/format', 'N/format/i18n', 'N/file', 'N/recor
                         eventRecord2.save();
                     }
 
-                        } else {
+
+                    // customerRecord.setValue('custentity_jj_customer_ox360_otgn_330', csfeedback11 + " " + csfeedback22 + " " + " " + csfeedback33 + " " + csfeedback44 + " " + csfeedback55);
+
+                    log.error('customerRecord', customerRecord);
+                    var customerFreeformTextValue = customerRecord.getValue({
+                        fieldId: 'custentity_jj_customer_ox360_otgn_330'
+                    });
+                    var freeformobject = {};
+                    var customerFeedback = [];
+                    if (csfeedback11 != "") {
+                        customerFeedback[0] = csfeedback11;
+                    }
+                    if (csfeedback22 != "") {
+                        customerFeedback[1] = csfeedback22;
+                    }
+                    if (csfeedback33 != "") {
+                        customerFeedback[2] = csfeedback33;
+                    }
+                    if (csfeedback44 != "") {
+                        customerFeedback[3] = csfeedback44;
+                    }
+                    if (csfeedback55 != "") {
+                        customerFeedback[4] = csfeedback55;
+                    }
+
+                    var bulkByOpportunity = [];
+                    if (bboppo11 != "") {
+                        bulkByOpportunity[0] = bboppo11;
+                    }
+                    if (bboppo22 != "") {
+                        bulkByOpportunity[1] = bboppo22;
+                    }
+                    if (bboppo33 != "") {
+                        bulkByOpportunity[2] = bboppo33;
+                    }
+                    if (bboppo44 != "") {
+                        bulkByOpportunity[3] = bboppo44;
+                    }
+                    if (bboppo55 != "") {
+                        bulkByOpportunity[4] = bboppo55;
+                    }
+
+                    var productOpportunity = [];
+                    if (prdoppo11 != "") {
+                        productOpportunity[0] = prdoppo11;
+                    }
+                    if (prdoppo22 != "") {
+                        productOpportunity[1] = prdoppo22;
+                    }
+                    if (prdoppo33 != "") {
+                        productOpportunity[2] = prdoppo33;
+                    }
+                    if (prdoppo44 != "") {
+                        productOpportunity[3] = prdoppo44;
+                    }
+                    if (prdoppo55 != "") {
+                        productOpportunity[4] = prdoppo55;
+                    }
+                    freeformobject.k1 = customerFeedback;
+                    freeformobject.k2 = bulkByOpportunity;
+                    freeformobject.k3 = productOpportunity;
+
+                    // var test0 = freeformobject.k1[0];
+                    // var test1 = freeformobject.k1[1];
+                    //
+                    // log.debug('test0',test0);
+                    // log.debug('test1',test1);
+
+
+                    var freeformobjectJSON = JSON.stringify(freeformobject);
+
+                    // log.debug('freeformobjectJSON', freeformobjectJSON);
+
+
+                    customerRecord.setValue('custentity_jj_customer_ox360_otgn_330', freeformobjectJSON);
+
+                    // for (var i = 0; i < customerSearchObj.columns.length; i++) {
+                    //     objects[i] = result.getValue(customerSearchObj.columns[i]);
+                    // }
+
+
+                    var customerRecordId = customerRecord.save();
+                    // log.debug('customerRecordId', customerRecordId);
+
+                    log.error('customerFreeformTextValue', customerFreeformTextValue);
+
+                    // redirect to OX360 Quarterly Report pdf
+                    var responsePdf = "<html><head></head><body><script>window.location.href='/app/site/hosting/scriptlet.nl?script=1865&deploy=1&currentUser=" + currentuser + "'</script></body></html>";
+
+                    context.response.write(responsePdf);
+
+
+                } else {
                     // log.error('else', 'else');
 
                     var customerSearchObj = search.create({
                         type: "customer",
-                        title: "search" + new Date().getTime(),
+                        // title: "search" + new Date().getTime(),
                         filters:
                             [
                                 ["stage", "anyof", "CUSTOMER"],
@@ -601,7 +709,7 @@ define(['N/search', 'N/runtime', 'N/format', 'N/format/i18n', 'N/file', 'N/recor
                         'td.total{font-size: 10pt; padding-right: 3px; border: 1px solid Gray; border-collapse: collapse; text-align:right; }' +
                         'tr.heading{background-color:rgb(0, 191, 255); }' +
                         '.btn{width:25%; background-color: #00BFFF; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 2px; float: right;}' +
-                        '.btnsave{width:25%; background-color: #00BFFF; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 2px;}' +
+                        '.btnsave{width:49.7%; background-color: #00BFFF; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 2px;}' +
                         'td.freeform1{width:2%;}' +
                         'td.freeformtext{width:98%;}' +
                         'td input[type=text]{width: 100%; display: inline-block;}' +
@@ -613,7 +721,7 @@ define(['N/search', 'N/runtime', 'N/format', 'N/format/i18n', 'N/file', 'N/recor
 
                         '<body>' +
                         '<div class="layout">' +
-                        '<table align="left" width="70%" height="80px" style="border-collapse: collapse;">' +
+                        '<table align="left" width="100%" height="80px" style="border-collapse: collapse;">' +
                         '<tr style = "border:none; margin:none; height:40px;">' +
                         '<td style="background-color:rgb(0, 191, 255); color:white; width:20%; font-size: 20pt;border:none; margin:none; padding-left:3px;"><b>Customer</b></td> ' +
                         '<td style="background-color:rgb(240, 248, 255); font-size: 20pt;border:none; margin:none; padding-left:3px;"><b>' + objects.customerName + '</b></td></tr>' +
@@ -622,7 +730,7 @@ define(['N/search', 'N/runtime', 'N/format', 'N/format/i18n', 'N/file', 'N/recor
                         '</tr>' +
                         '</table>' +
 
-                        '<button class="btn" onclick="window.open(\'http://google.com\')">Print OX360 Report</button>' +
+                        //'<button class="btn" onclick="window.open(\'http://google.com\')">Print OX360 Report</button>' +
                         '<br>' +
                         '<table height="5px" width="100%"><tr><td></td></tr></table>' +
                         '<table width="100%" height="20px" style="border-collapse: collapse;"><tr><th style="background-color:rgb(0, 191, 255); color:white;  text-align: center; font-size: 13pt;"><b>OX360 Report</b></th></tr></table>' +
@@ -666,6 +774,7 @@ define(['N/search', 'N/runtime', 'N/format', 'N/format/i18n', 'N/file', 'N/recor
                         '<tr style="height:7px;"><td></td></tr>' +
                         '<tr style="width:50%">' + imageContent + '</tr></table>' +
 
+                        // '<form method="post" action="https://3425005-sb1.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1865&deploy=1&currentUser=18445">' +
                         '<form method="post">' +
                         '<table width="50%">' +
                         '<tr style="background-color: DeepSkyBlue; color: white; border: 1px white; width: 100%;"><td colspan="2">Customer feedback</td></tr>' +
@@ -707,8 +816,8 @@ define(['N/search', 'N/runtime', 'N/format', 'N/format/i18n', 'N/file', 'N/recor
                         '<td><input class="input-block-level" type="text" value="" name="prdoppo5"></td></tr>' +
                         '</table>' +
                         '<button type="submit" class="btnsave"> Save and Print OX360 Report</button>' +
+                        // '<button type="submit" class="btnsave"> Save and Print OX360 Report</button>' +
                         '</form>' +
-
                         '</div>' +
                         '</body>' +
                         '</html>'
@@ -716,8 +825,7 @@ define(['N/search', 'N/runtime', 'N/format', 'N/format/i18n', 'N/file', 'N/recor
                     // var scriptObj = runtime.getCurrentScript();
                     // log.debug('Remaining governance units: ' + scriptObj.getRemainingUsage());
                 }
-            } catch
-                (e) {
+            } catch (e) {
                 log.debug({
                     title: e.name,
                     details: e
