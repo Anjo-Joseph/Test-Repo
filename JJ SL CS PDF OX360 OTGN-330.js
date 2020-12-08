@@ -11,13 +11,13 @@
  *
  * Author: Jobin & Jismi IT Services LLP
  * Script Description :
- * Render OX360 Report pdf when clicking print button in suitelet page in customer dashboard
+ * Render OX360 Report pdf when clicking print button in suitelet page in customer dashboard & in customer Record.
  * Date created :03-12-2020
  *
  ******************************************************************************/
 define(['N/render', 'N/search', 'N/file', 'N/format/i18n', 'N/xml', 'N/record'],
     function (render, search, file, formati, xml, record) {
-
+//function to format number with 2 decimal digits
         function formatCurrency(num) {
             try {
                 if (num) {
@@ -29,7 +29,7 @@ define(['N/render', 'N/search', 'N/file', 'N/format/i18n', 'N/xml', 'N/record'],
                 return "0.00";
             }
         }
-
+        // function to format amount to Australian currency format
         function makeItCurrency(myNumber) {
             var myFormat = formati.getCurrencyFormatter({currency: "AUD"});
             var newCur = myFormat.format({
@@ -37,7 +37,7 @@ define(['N/render', 'N/search', 'N/file', 'N/format/i18n', 'N/xml', 'N/record'],
             });
             return newCur;
         }
-
+// Function to check values and set default values
         function checkForParameter(parameter, defaultparameter) {
             try {
                 if (parameter !== null && parameter !== undefined
@@ -54,7 +54,7 @@ define(['N/render', 'N/search', 'N/file', 'N/format/i18n', 'N/xml', 'N/record'],
                 log.error("Err@ FN checkForParameter", e);
             }
         }
-
+// function to display sales by product category table content
         function createTableRows(productCategoryArray) {
             if (productCategoryArray.length < 1) {
                 var tableContent = "<tr>" +
@@ -86,7 +86,7 @@ define(['N/render', 'N/search', 'N/file', 'N/format/i18n', 'N/xml', 'N/record'],
             return tableContent;
         }
 
-
+// function to replace special characters in url
         function escapeSpecialChar(imageurl) {
             if (imageurl != "" && imageurl != null) {
                 // var newString = xml.escape({
@@ -105,74 +105,22 @@ define(['N/render', 'N/search', 'N/file', 'N/format/i18n', 'N/xml', 'N/record'],
             }
 
         }
-
-//         function freeformContent(customerFreeformTextValueObject) {
-//             try {
-//
-// var customerFreeformTextValueObject_k1 = customerFreeformTextValueObject.k1;
-//                 if (customerFreeformTextValueObject.k1 != []) {
-//                     var freeformtextContent = '<tr class=\"heading\"><td class=\"heading\">Customer feedback</td></tr>'
-//
-//                         for (var i=0;i<5; i++) {
-//                             log.debug('inside for loop','inside for loop');
-//                             if(customerFreeformTextValueObject.k1[i] != null) {
-//                                 freeformtextContent += '<tr class=\"data\"><td class=\"data\">' + customerFreeformTextValueObject.k1[i] + '</td></tr>'
-//                             }
-//                         }
-//                     }
-//                 var customerFreeformTextValueObject_k2 = customerFreeformTextValueObject.k2;
-//                 if (customerFreeformTextValueObject.k2 != []) {
-//                      freeformtextContent += '<tr class=\"heading\"><td class=\"heading\">Bulk buy opportunities</td></tr>'
-//
-//                     for (var i=0;i<5; i++) {
-//                         if(customerFreeformTextValueObject.k2[i] != null) {
-//                             freeformtextContent += '<tr class=\"data\"><td class=\"data\">' + customerFreeformTextValueObject.k2[i] + '</td></tr>'
-//                         }
-//                     }
-//                 }
-//
-//                 var customerFreeformTextValueObject_k3 = customerFreeformTextValueObject.k3;
-//                 if (customerFreeformTextValueObject.k3 != []) {
-//                     freeformtextContent += '<tr class=\"heading\"><td class=\"heading\">Product opportunities</td></tr>'
-//
-//                     for (var i=0;i<5; i++) {
-//                         if(customerFreeformTextValueObject.k3[i] != null) {
-//                             freeformtextContent += '<tr class=\"data\"><td class=\"data\">' + customerFreeformTextValueObject.k3[i] + '</td></tr>'
-//                         }
-//                     }
-//                 }
-//
-//
-//                 return freeformtextContent;
-//
-//             } catch (e) {
-//
-//                 log.error("Err@ FN freeformContent", e);
-//
-//             }
-//
-//         }
-
-
+// function to display customer feedback content table in pdf
         function customerFeedbackContent(customerFreeformTextValueObject) {
             try {
-
                 var customerFreeformTextValueObject_k1 = customerFreeformTextValueObject.k1;
-                if (customerFreeformTextValueObject.k1 != []) {
-                    var freeformtextContent = '<tr class=\"heading\"><td class=\"heading\">Customer feedback</td></tr>'
+                // log.debug('customerFreeformTextValueObject.k1',customerFreeformTextValueObject.k1);
+                var customerFreeformTextValueObjectLength = customerFreeformTextValueObject.k1.length;
+                // log.debug('customerFreeformTextValueObjectLength',customerFreeformTextValueObjectLength);
 
-                    for (var i=0;i<5; i++) {
-                        log.debug('inside for loop','inside for loop');
-                        if(customerFreeformTextValueObject.k1[i] != null) {
-                            freeformtextContent += '<tr class=\"data\"><td class=\"data\">' + customerFreeformTextValueObject.k1[i] + '</td></tr>'
+                    if(customerFreeformTextValueObjectLength !=0){
+                    var freeformtextContent = '<tr class=\"heading\" width="100%"><td class=\"heading\" width="100%">Customer feedback</td></tr>'
+                    for (var i = 0; i < 5; i++) {
+                        if (customerFreeformTextValueObject.k1[i] != null) {
+                            freeformtextContent += '<tr class=\"data\" width="100%"><td class=\"data\" width="100%">' + customerFreeformTextValueObject.k1[i] + '</td></tr>'
                         }
                     }
                 }
-
-
-
-
-
 
                 return freeformtextContent;
 
@@ -183,16 +131,17 @@ define(['N/render', 'N/search', 'N/file', 'N/format/i18n', 'N/xml', 'N/record'],
             }
 
         }
-
+// function to display bulk by opportunity table content in pdf
         function bulkByOppoContent(customerFreeformTextValueObject) {
             try {
 
                 var customerFreeformTextValueObject_k2 = customerFreeformTextValueObject.k2;
-                if (customerFreeformTextValueObject.k2 != []) {
-                   var  freeformtextContent = '<tr class=\"heading\"><td class=\"heading\">Bulk buy opportunities</td></tr>'
+                var customerFreeformTextValueObjectLength = customerFreeformTextValueObject.k2.length;
+                if (customerFreeformTextValueObjectLength != 0) {
+                    var freeformtextContent = '<tr class=\"heading\"><td class=\"heading\">Bulk buy opportunities</td></tr>'
 
-                    for (var i=0;i<5; i++) {
-                        if(customerFreeformTextValueObject.k2[i] != null) {
+                    for (var i = 0; i < 5; i++) {
+                        if (customerFreeformTextValueObject.k2[i] != null) {
                             freeformtextContent += '<tr class=\"data\"><td class=\"data\">' + customerFreeformTextValueObject.k2[i] + '</td></tr>'
                         }
                     }
@@ -207,16 +156,17 @@ define(['N/render', 'N/search', 'N/file', 'N/format/i18n', 'N/xml', 'N/record'],
             }
 
         }
-
+// function to display product opportunity content in pdf
         function productOppoContent(customerFreeformTextValueObject) {
             try {
 
                 var customerFreeformTextValueObject_k3 = customerFreeformTextValueObject.k3;
-                if (customerFreeformTextValueObject.k3 != []) {
-                  var  freeformtextContent = '<tr class=\"heading\"><td class=\"heading\">Product opportunities</td></tr>'
+                var customerFreeformTextValueObjectLength = customerFreeformTextValueObject.k3.length;
+                if (customerFreeformTextValueObjectLength != 0) {
+                    var freeformtextContent = '<tr class=\"heading\"><td class=\"heading\">Product opportunities</td></tr>'
 
-                    for (var i=0;i<5; i++) {
-                        if(customerFreeformTextValueObject.k3[i] != null) {
+                    for (var i = 0; i < 5; i++) {
+                        if (customerFreeformTextValueObject.k3[i] != null) {
                             freeformtextContent += '<tr class=\"data\"><td class=\"data\">' + customerFreeformTextValueObject.k3[i] + '</td></tr>'
                         }
                     }
@@ -233,22 +183,28 @@ define(['N/render', 'N/search', 'N/file', 'N/format/i18n', 'N/xml', 'N/record'],
         }
 
 
-
         function onRequestFxn(context) {
             try {
                 var objects = {};
 
-                var currentuser = '17372';
+                // var currentuser = '18445';
 
-
+                var currentuser = context.request.parameters.currentUser;
+                log.debug('testcurrentuser', currentuser);
                 var customerRecord = record.load({type: "customer", id: currentuser});
                 var customerFreeformTextValue = customerRecord.getValue({
                     fieldId: 'custentity_jj_customer_ox360_otgn_330'
                 });
-                log.debug('customerFreeformTextValue', customerFreeformTextValue);
-                if(customerFreeformTextValue !="" || customerFreeformTextValue!= null) {
+                // log.debug('customerFreeformTextValue', customerFreeformTextValue);
+
+                if (customerFreeformTextValue !== null && customerFreeformTextValue !== undefined
+                    && customerFreeformTextValue !== "null" && customerFreeformTextValue !== "NaN"
+                    && customerFreeformTextValue !== "undefined"
+                    && customerFreeformTextValue != ""
+                    && customerFreeformTextValue != " ") {
+                    // log.debug('test','test');
                     var customerFreeformTextValueObject = JSON.parse(customerFreeformTextValue);
-                    log.debug('customerFreeformTextValueObject', customerFreeformTextValueObject);
+                    // log.debug('customerFreeformTextValueObject', customerFreeformTextValueObject);
 
                     // var test0 = customerFreeformTextValueObject.k1[2];
                     // log.debug('test0', test0);
@@ -262,10 +218,10 @@ define(['N/render', 'N/search', 'N/file', 'N/format/i18n', 'N/xml', 'N/record'],
                     var customerFeedbackContent1 = customerFeedbackContent(customerFreeformTextValueObject);
                     var bulkByOppoContent1 = bulkByOppoContent(customerFreeformTextValueObject);
                     var productOppoContent1 = productOppoContent(customerFreeformTextValueObject);
-                }else{
-                    var customerFeedbackContent1 ="";
-                    var bulkByOppoContent1 ="";
-                    var productOppoContent1 ="";
+                } else {
+                    var customerFeedbackContent1 = "";
+                    var bulkByOppoContent1 = "";
+                    var productOppoContent1 = "";
                 }
 
                 var customerSearchObj = search.create({
@@ -723,7 +679,6 @@ define(['N/render', 'N/search', 'N/file', 'N/format/i18n', 'N/xml', 'N/record'],
                 templateContent = templateContent.replace('<!--BULK_BY_OPPORTUNITY_CONTENT_HERE-->', bulkByOppoContent1);
 
                 templateContent = templateContent.replace('<!--PRODUCT_OPPORTUNITY_CONTENT_HERE-->', productOppoContent1);
-
 
 
                 renderer.templateContent = templateContent;
