@@ -105,9 +105,19 @@
             font-size: 13pt;
             font-weight: bold;
             }
+            img{
+            width: 100%;
+            height: auto;
+            }
 <!--            div.custname{-->
 <!--            word-wrap: normal;-->
 <!--            }-->
+            div.freeformdiv{
+            float: left;
+            }
+            table.freeTextTable{
+            page-break-inside: avoid;
+            }
 
         </style>
     </head>
@@ -261,6 +271,7 @@
             </tbody>
         </table>
         <p>&nbsp;</p>
+
         <div align="right">
             <table align="right" width="60%">
                 <tbody>
@@ -273,19 +284,39 @@
                         <td>&nbsp;</td>
                     </tr>
 
-                    <tr>
-                        <td style="text-align: center; width:60%;">
+                    <tr style="width:31%">
+                        <td style="text-align: center;">
 <!--                            <img src="https://3425005-sb1.app.netsuite.com/core/media/media.nl?id=23774770&amp;c=3425005_SB1&amp;h=4JRD3TXTflztyPx40gQ4uuPCP0_Xgv98YiG3PZt15RdLNUyr&amp;fcts=20201126233413&amp;whence="-->
-<!--                                 alt="No Image" width="31%" height="20%"/>-->
+<!--                                 alt="No Image" width="100%" height="auto"/>-->
 
-                            <img src = "${data.imageurl}" alt="No Image" width="31%" />
+                            <img src = "${data.imageurl}" alt="No Image"  width="400px" height="150px"/>
                         </td>
                     </tr>
                 </tbody>
             </table>
+
+
+
         </div>
-        <div>
-            <table></table>
+        <p>&nbsp;</p>
+        <div align="left" class="freeformdiv">
+            <table class="freeTextTable"><tr><td>
+                <table align="left" width="100%">
+                    <!--CUSTOMER_FEEDBACK_CONTENT_HERE-->
+                </table>
+                <p>&nbsp;</p>
+                <table align="left" width="100%">
+                    <!--BULK_BY_OPPORTUNITY_CONTENT_HERE-->
+                </table>
+                <p>&nbsp;</p>
+                <table align="left" width="100%">
+                    <!--PRODUCT_OPPORTUNITY_CONTENT_HERE-->
+                </table>
+            </td></tr>
+
+            </table>
         </div>
+
+<!--        <img src="https://images.ctfassets.net/hrltx12pl8hq/6bi6wKIM5DDM5U1PtGVFcP/1c7fce6de33bb6575548a646ff9b03aa/nature-photography-pictures.jpg?fit=fill&amp;w=800&amp;h=300" width="40%" height="auto"/>-->
     </body>
 </pdf>
